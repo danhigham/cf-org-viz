@@ -2,11 +2,39 @@
   <head>
     <title>CF Org Viz</title>
     <script src="/js/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/js/underscore-min.js" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="/css/org-viz.css">
   </head>
   <body>
 
-  </body>
-    <script src="/js/org-viz.js" charset="utf-8"></script>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="0" width="0">
+      <defs>
+        <pattern id="stripe" patternUnits="userSpaceOnUse" x="0" y="0" width="10" height="10">
+          <g>
+            <line x1="10" y1="0" x2="0" y2="10" />
+          </g>
+        </pattern>
+      </defs>
+    </svg>
 
+  </body>
+
+    <script src="/js/org-viz.js" charset="utf-8"></script>
+    <script charset="utf-8">
+    	(function() {
+	    	window.orgView = new OrgView();
+  			var orgs = JSON.parse('<%= orgs %>');
+  			
+  			// var orgs = JSON.parse('[{"guid":"6f501f6a-947d-40e4-b9d8-d36786e85238","name":"pivotal","spaces":[{"guid":"5d65cb46-47c3-4e09-92e1-1d76e41267d4","name":"acceptance","service_count":3,"app_count":9,"mem_dev_total":6144,"mem_prod_total":0},{"guid":"b3384eba-9b34-40cc-9bcb-4a6b614dc6a1","name":"allocations-prod","service_count":0,"app_count":1,"mem_dev_total":1536,"mem_prod_total":0},{"guid":"9760a7dd-cb33-472f-9388-a1b67c07dc63","name":"allocations-staging","service_count":0,"app_count":1,"mem_dev_total":512,"mem_prod_total":0},{"guid":"259fb5db-f955-41c8-a08b-831f5cc7fd9c","name":"backend","service_count":0,"app_count":1,"mem_dev_total":256,"mem_prod_total":0},{"guid":"eb5808f5-7f1a-417a-9646-746fda5d207f","name":"bazookas","service_count":0,"app_count":1,"mem_dev_total":2048,"mem_prod_total":0},{"guid":"e0bc3c3d-4a35-46cb-aec6-00ceed40db2a","name":"campaign","service_count":0,"app_count":0,"mem_dev_total":0,"mem_prod_total":0},{"guid":"c7118357-7219-409f-8d86-d5a40c8448ae","name":"coal-mine","service_count":0,"app_count":1,"mem_dev_total":384,"mem_prod_total":0},{"guid":"fbf31726-ec01-4329-8db2-e703ec618646","name":"docs","service_count":0,"app_count":1,"mem_dev_total":256,"mem_prod_total":0},{"guid":"0c860a28-2ef3-47cf-ba32-2816d945f25a","name":"onpremise","service_count":3,"app_count":3,"mem_dev_total":2560,"mem_prod_total":0},{"guid":"e4ba2f42-b800-4129-aa45-f00714afd13d","name":"production","service_count":3,"app_count":16,"mem_dev_total":11200,"mem_prod_total":0},{"guid":"aee7b5e2-bc9a-45e2-8189-51622291e2f1","name":"repository","service_count":2,"app_count":1,"mem_dev_total":512,"mem_prod_total":0},{"guid":"d47ea79f-b7aa-4d38-afdb-3c36a9bb244c","name":"squash","service_count":1,"app_count":2,"mem_dev_total":1152,"mem_prod_total":0},{"guid":"3706e509-1c3f-47c3-ad35-f9320991e653","name":"trackerdash","service_count":2,"app_count":2,"mem_dev_total":512,"mem_prod_total":0},{"guid":"6c08c2c6-e1aa-4361-a90d-f1758278c150","name":"www-prod","service_count":3,"app_count":32,"mem_dev_total":8448,"mem_prod_total":0},{"guid":"b7a8c527-d2c4-43e6-9a34-b8b8e677ecba","name":"zendesk","service_count":0,"app_count":2,"mem_dev_total":512,"mem_prod_total":0}]},{"guid":"ed0fb488-6eeb-4151-80fb-8eee72a6349c","name":"dhigham-org","spaces":[{"guid":"480f76c2-8ca0-4e78-955e-3cab71cf279d","name":"development","service_count":6,"app_count":7,"mem_dev_total":1920,"mem_prod_total":0},{"guid":"7e84e041-153f-4fe9-ab4b-2462cef86263","name":"production","service_count":0,"app_count":1,"mem_dev_total":128,"mem_prod_total":0},{"guid":"e58e1ef8-e2fc-417d-92c0-266723b76ece","name":"staging","service_count":0,"app_count":0,"mem_dev_total":0,"mem_prod_total":0}]}]');
+
+  			orgView.loadOrgs(orgs, function(org) {
+  				_.each(org.spaces, function(space) {					
+  					orgView.loadApps(space);
+  				});
+
+          orgView.updateAppStats();
+  			});
+  		}).call(this);
+    </script>
 </html>
+
